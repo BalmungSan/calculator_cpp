@@ -96,3 +96,20 @@ NumNode::NumNode(int n) :
 int NumNode::evaluate() {
    return val;
 }
+
+StoreNode::StoreNode(AST *sub) :
+   UnaryNode(sub)
+{}
+
+int StoreNode::evaluate() {
+   int ret = getSubTree()->evaluate();
+   calc->store(ret);
+   return ret;
+}
+
+RecallNode::RecallNode() {}
+
+int RecallNode::evaluate() {
+   return calc->recall();
+}
+

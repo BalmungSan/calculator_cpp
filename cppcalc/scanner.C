@@ -23,7 +23,7 @@ int isDigit(char c) {
 }
 
 int isWhiteSpace(char c) {
-  return (c == ' ' || c == '\t' || c == '\n');
+  return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
 }
 
 Scanner::Scanner(istream* in):
@@ -81,7 +81,7 @@ Token* Scanner::getToken() {
                lineCount++;
             }
             else if (isWhiteSpace(c));
-            else if (inStream->eof()) {
+            else if (inStream->eof() or c == -1) {
                foundOne=true;
                type=eof;
             }
@@ -162,12 +162,3 @@ Token* Scanner::getToken() {
 
 }
          
-  
-
-
-
-
-
-
-
-

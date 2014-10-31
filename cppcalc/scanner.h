@@ -1,5 +1,4 @@
-#ifndef scanner_h
-#define scanner_h
+#pragma once
 
 #include <iostream>
 #include "token.h"
@@ -22,8 +21,4 @@ private:
   bool needToken;
   Token* lastToken;
 };
-
-#endif
-  
-  
 
