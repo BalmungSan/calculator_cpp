@@ -49,37 +49,93 @@ AST* Parser::RestExpr(AST* e) {
 }
 
 AST* Parser::Term() {
-   //write your Term() code here. This code is just temporary
-   //so you can try the calculator out before finishing it.
-   Token* t = scan->getToken();
-
-   if (t->getType() == number) {
-      istringstream in(t->getLex());
-      int val;
-      in >> val;
-      return new NumNode(val);
-   }
-
-   cout << "Term not implemented" << endl;
-
-   throw ParseError; 
+   return RestTerm(Storable());
 }
 
 AST* Parser::RestTerm(AST* e) {
-   cout << "RestTerm not implemented" << endl;
+   Token* t = scan->getToken();
 
-   throw ParseError; 
+   if (t->getType() == times) {
+      return RestTerm(new TimesNode(e,Storable()));
+   }
+
+   if (t->getType() == divide) {
+      return RestTerm(new DivideNode(e,Storable()));
+   }
+
+   scan->putBackToken();
+
+   return e;
 }
 
 AST* Parser::Storable() {
-   cout << "Storable not implemented" << endl;
+   AST* result = Factor();
 
-   throw ParseError; 
+   Token *t = scan->getToken();
+
+   if (t->getType() == keyword) {
+      if (t->getLex().compare("S") == 0) {
+         return new StoreNode(result);
+      } 
+      else 
+      {
+         cout << "Expected S found: " 
+              << t->getType()
+              << " at col: " << t->getCol()
+              << endl;
+         throw ParseError;
+      }
+   }
+
+   return result;
 }
 
 AST* Parser::Factor() {
-   cout << "Factor not implemented" << endl;
+   Token *t = scan->getToken();
 
-   throw ParseError; 
-}
+   if(t->getType() == number) {
+     istringstream in(t->getLex());
+     int val;
+     in >> val;
+     return new NumNode(val);
+   }
+
+   if (t->getType() == keyword) {
+
+      if(t->getLex().compare("R") == 0) {
+         return new RecallNode();
+      }
+      else
+      {
+         cout << "Expected R found: " 
+              << t->getType()
+              << " at col: " << t->getCol()
+              << endl;
+         throw ParseError;
+      }
+   } 
    
+   if (t->getType() == lparen) {
+
+   AST *result = Expr();
+
+   t = scan->getToken();
+
+   if (t->getType() == rparen) {
+       return result;
+   }
+   else
+   {
+         cout << "Expected ) found: " 
+              << t->getType()
+              << " at col: " << t->getCol()
+              << endl;
+         throw ParseError;
+   }
+  }
+         cout << "Expected Number, or R or (); found: " 
+              << t->getType()
+              << " at col: " << t->getCol()
+              << endl;
+         throw ParseError;
+}

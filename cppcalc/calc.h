@@ -1,6 +1,4 @@
-#ifndef calc_h
-#define calc_h
+#pragma once
 
 extern int memory;
 
-#endif
