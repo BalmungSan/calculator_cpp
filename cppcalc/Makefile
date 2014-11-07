@@ -1,17 +1,18 @@
+# CXXFLAGS=-g
 calc: calc.o scanner.o token.o ast.o parser.o calculator.o
-	g++ -g -o calc calc.o scanner.o token.o ast.o parser.o calculator.o
+	g++ ${CXXFLAGS} -o calc calc.o scanner.o token.o ast.o parser.o calculator.o
 calc.o: calc.C scanner.h token.h
-	g++ -g -c calc.C
+	g++ ${CXXFLAGS} -c calc.C
 calculator.o: calculator.C calculator.h parser.h ast.h
-	g++ -g -c calculator.C
+	g++ ${CXXFLAGS} -c calculator.C
 scanner.o: scanner.C scanner.h token.h
-	g++ -g -c scanner.C
+	g++ ${CXXFLAGS} -c scanner.C
 token.o: token.C token.h
-	g++ -g -c token.C
+	g++ ${CXXFLAGS} -c token.C
 ast.o: ast.C ast.h
-	g++ -g -c ast.C
+	g++ ${CXXFLAGS} -c ast.C
 parser.o: parser.C parser.h
-	g++ -g -c parser.C
+	g++ ${CXXFLAGS} -c parser.C
 clean:
 	rm -f *.o
 	rm -f calc

@@ -87,6 +87,8 @@ AST* Parser::Storable() {
       }
    }
 
+   scan->putBackToken();
+
    return result;
 }
 
