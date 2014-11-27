@@ -1,10 +1,9 @@
 #pragma once
-
 #include <string>
 using namespace std;
 
 enum TokenType {
-   identifier,keyword,number,add,sub,times,divide,lparen,rparen,eof,unrecognized
+  identifier,keyword,number,add,sub,times,divide,lparen,rparen,mod,eof,eol,eoe,equals,unrecognized,assign
 };
 
 class Token {

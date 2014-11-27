@@ -1,4 +1,4 @@
-# CXXFLAGS=-g
+CXXFLAGS=-g
 calc: calc.o scanner.o token.o ast.o parser.o calculator.o
 	g++ ${CXXFLAGS} -o calc calc.o scanner.o token.o ast.o parser.o calculator.o
 calc.o: calc.C scanner.h token.h
@@ -16,3 +16,4 @@ parser.o: parser.C parser.h
 clean:
 	rm -f *.o
 	rm -f calc
+	rm a.ewe

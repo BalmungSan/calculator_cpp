@@ -8,10 +8,10 @@ using namespace std;
 //Uncomment this to get debug information
 //#define debug
 
-const int numberOfKeywords = 2;
+const int numberOfKeywords = 5;
 
 const string keywd[numberOfKeywords] = {
-  string("S"), string("R")
+  string("S"), string("R"), string("M"), string("P"), string("C")
 };
 
 int isLetter(char c) {
@@ -23,7 +23,7 @@ int isDigit(char c) {
 }
 
 int isWhiteSpace(char c) {
-  return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+  return (c == ' ' || c == '\t' || c == '\r' || c == '>');
 }
 
 Scanner::Scanner(istream* in):
@@ -66,28 +66,34 @@ Token* Scanner::getToken() {
       switch (state) {
          case 0 : 
             lex = "";
-            column=colCount;
+            column = colCount;
             line = lineCount;
-            if (isLetter(c)) state=1;
-            else if (isDigit(c)) state=2;
-            else if (c=='+') state=3;
-            else if (c=='-') state=4;
-            else if (c=='*') state=5;
-            else if (c=='/') state=6;
-            else if (c=='(') state=7;
-            else if (c==')') state=8;
-            else if (c=='\n') {
-               colCount=-1;
-               lineCount++;
-            }
+            if (isLetter(c)) state = 1;
+            else if (isDigit(c)) state = 2;
+            else if (c == '+') state = 3;
+            else if (c == '-') state = 4;
+            else if (c == '*') state = 5;
+            else if (c == '/') state = 6;
+            else if (c == '(') state = 7;
+            else if (c == ')') state = 8;
+	        else if (c == '%') state = 9;
+			else if (c == '=') state = 10;
+			else if (c == ';') state = 11;
             else if (isWhiteSpace(c));
-            else if (inStream->eof() or c == -1) {
-               foundOne=true;
-               type=eof;
-            }
-            else {
-               cout << "Unrecognized Token found at line " << line <<
-                  " and column " << column << endl;
+			else if (c == '\n') {
+               colCount = -1;
+               lineCount++;
+			   //Se identifica el token como un <EOL>
+			   foundOne = true;
+               type = eol;
+			   //--------------------------------
+            }else if (inStream->eof() or c == -1 or c == '$' ){// identificamos el <EOF> como un '$'
+               foundOne = true;
+               type = eof;
+            } else {
+               cout << "Unrecognized Token found at line " << line
+                    << " and column " << column 
+				    << " Found: " << c <<endl;
                throw UnrecognizedToken;
             }
             break;
@@ -122,20 +128,32 @@ Token* Scanner::getToken() {
             break;
          case 5 :
             type = times;
-            foundOne=true;
+            foundOne = true;
             break;
          case 6 :
             type = divide;
-            foundOne=true;
+            foundOne = true;
             break;
          case 7 :
             type = lparen;
-            foundOne=true;
+            foundOne = true;
             break;
          case 8 :
             type = rparen;
-            foundOne=true;
+            foundOne = true;
             break;
+         case 9 :
+	        type = mod;
+	        foundOne = true;
+	        break;
+		 case 10 :
+		    type = equals;
+		    foundOne = true;
+		    break;
+         case 11 :
+            type = eoe;
+		    foundOne = true;
+		    break;		 
       }
       
       if (!foundOne) {
@@ -161,4 +179,4 @@ Token* Scanner::getToken() {
    return t;
 
 }
-         
+ 

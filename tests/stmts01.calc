@@ -1,0 +1,7 @@
+a = 3;
+b = 4;
+c = a + b + c;
+d = a - b - c;
+e = a * b * c;
+f = b / a;
+g = a % b;
